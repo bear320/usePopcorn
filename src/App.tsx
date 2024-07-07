@@ -60,7 +60,10 @@ import ErrorMsg from "./components/ErrorMsg";
 function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState<IMovie[]>([]);
-  const [watched, setWatched] = useState<IWatchedMovie[]>([]);
+  const [watched, setWatched] = useState<IWatchedMovie[]>(() => {
+    const storedValue = localStorage.getItem("watched");
+    return storedValue ? JSON.parse(storedValue) : [];
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -80,6 +83,10 @@ function App() {
   const handleRemoveFromWatched = (id: string) => {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   };
+
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
 
   useEffect(() => {
     const controller = new AbortController();
