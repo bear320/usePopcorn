@@ -9,6 +9,7 @@ export interface IWatchedMovie extends IMovie {
   runtime: number;
   imdbRating: number;
   userRating: number;
+  countRatingDecisions?: number;
 }
 
 export interface IMovieDetail {
