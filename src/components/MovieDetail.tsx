@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { IWatchedMovie, IMovieDetail } from "../utils/types";
 import Loader from "./Loader";
 import StarRating from "./StarRating";
+import { useKey } from "../hooks/useKey";
 
 const MovieDetail = ({
   id,
@@ -18,7 +19,7 @@ const MovieDetail = ({
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState(0);
 
-  const countRef = useRef(0);
+  const countRef = useRef<number>(0);
 
   useEffect(() => {
     if (userRating) countRef.current++;
@@ -43,17 +44,7 @@ const MovieDetail = ({
     };
   }, [title]);
 
-  useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      if (e.code === "Escape") onCloseMovie();
-    };
-
-    document.addEventListener("keydown", callback);
-
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onCloseMovie]);
+  useKey("Escape", onCloseMovie);
 
   const handleGetDetails = async (id: string) => {
     setIsLoading(true);
